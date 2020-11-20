@@ -1,10 +1,24 @@
-# pam_aad [![Build Status][travis-badge]][travis-url] [![GPL-3.0-or-later][gpl-badge]][gpl-license] [![Download](https://api.bintray.com/packages/jnchi/aad/libpam-aad/images/download.svg) ](https://bintray.com/jnchi/aad/libpam-aad/_latestVersion) 
+# pam_aad custom
 
 Azure Active Directory PAM Module
 
-_This PAM module aims to provide Azure Active Directory authentication for Linux._
+https://github.com/CyberNinjas/pam_aad
+
+オリジナルにある
+
+* SMTPサーバ設定及びログイン時にメールでプロンプトを送る機能を機能
+* グループマッチング
+
+は消しました。
+
+* upn が返ってこないとコアダンプ吐くので無い場合は unique_name を使用する
 
 ##  Installation
+
+```
+sudo add-apt-repository ppa:lramage/sds
+sudo apt install libjansson-dev libjwt-dev libpam0g-dev libsds-dev uuid-dev pamtester
+```
 
 ```
 ./bootstrap.sh
@@ -26,32 +40,20 @@ auth required pam_aad.so
 Create the file ```/etc/pam_aad.conf``` and fill it with:
 
 ```mustache
-{ 
+{
   "client": {
-    "id": "{{client_id}}"
+    "id": "50caab68-8eed-4ed3-8c61-12605cdbbff8"
   },
-  "domain": "{{domain}}",
-  "group": {
-    "id": "{{group_id}}"
-  },
-  "smtp_server": "{{smtp_server}}",
+  "domain": "albert2005.co.jp",
   "tenant": {
-    "name": "{{organization}}.onmicrosoft.com",
-    "address": "{{organization_email_address}}"
+    "name": "albpj.onmicrosoft.com",
+    "address": "yoshikazu_arimitsu@albert2005.co.jp"
   }
 }
 ```
 
-## Current Behavior
+### Test
 
-[![asciicast](https://asciinema.org/a/250072.svg)](https://asciinema.org/a/250072)
-
-## See also
-
-- https://github.com/google/google-authenticator-libpam
-- https://github.com/quarxConnect/pam_oauth2
-
-[gpl-badge]: https://img.shields.io/badge/license-GPL-green.svg
-[gpl-license]: COPYING
-[travis-badge]: https://travis-ci.org/CyberNinjas/pam_aad.svg?branch=c-dev
-[travis-url]: https://travis-ci.org/CyberNinjas/pam_aad
+```
+pamtester -v {{service}} $(whoami) authenticate
+```
