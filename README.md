@@ -68,6 +68,8 @@ pamtester -v {{service}} $(whoami) authenticate
 
 ## sshd で pam_aad を有効化
 
+#### pam.d 設定変更
+
 /etc/pam.d/common-account
 
 ```
@@ -82,6 +84,8 @@ auth    [success=2 ignore=ignore default=die]  pam_aad.so   # 追加
 auth    [success=1 default=ignore]      pam_unix.so nullok_secure try_first_pass
 ```
 
+#### sshd 設定変更
+
 /etc/ssh/sshd_config
 
 ```
@@ -89,6 +93,19 @@ UsePAM yes
 PasswordAuthentication no
 ```
 
+sshd 再起動
+
 ```
 $ sudo systemctl restart ssh
 ```
+
+#### ログイン
+
+```
+$ ssh yoshikazu_arimitsu@13.231.112.152
+Please use this one-time passcode (OTP) to sign in to your account: G8EVBXXXP
+Enter the code at https://aka.ms/devicelogin, then press enter.
+```
+
+{{user_name}}@{{domain}} で認証しにいく。  
+ユーザは事前に作っておくこと。
