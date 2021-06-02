@@ -91,6 +91,8 @@ auth    [success=1 default=ignore]      pam_unix.so nullok_secure try_first_pass
 ```
 UsePAM yes
 PasswordAuthentication no
+ChallengeResponseAuthentication yes
+
 ```
 
 sshd 再起動
